@@ -5,6 +5,7 @@
 #pip3 install requests
 #pip3 install bs4
 
+#run in the browser also what are you doing with the help of chrome driver
 
 # ## Basic fundamentals of web scraping
 
@@ -12,12 +13,29 @@
 from bs4 import BeautifulSoup
 # requests module is easy to operate some people use urllib but I prefer this one because it is easy to use.
 import requests
+from selenium import webdriver
 
 # I put here my own blog url ,you can change it.
 url="https://getpython.wordpress.com/"
-
+BASE_URL = "https://getpython.wordpress.com/"
 #Requests module use to data from given url
 source=requests.get(url)
+
+
+def get_chrome_web_driver(options):
+    return webdriver.Chrome("./chromedriver", chrome_options=options)
+
+
+def get_web_driver_options():
+    return webdriver.ChromeOptions()
+
+
+def set_ignore_certificate_error(options):
+    options.add_argument('--ignore-certificate-errors')
+
+
+def set_browser_as_incognito(options):
+    options.add_argument('--incognito')
 
 # BeautifulSoup is used for getting HTML structure from requests response.(craete your soup)
 soup=BeautifulSoup(source.text,'html')
