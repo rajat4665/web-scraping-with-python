@@ -59,6 +59,14 @@ print(links)
 # here i extarcted href data from anchor tag.
 print(links['href']) 
 
+##  or another way
+##extracting href(links) attribute and anchor(<a>) tag from page 
+for a in soup.find_all('a', href=True):
+    print ( a['href'])
+
+for i in links:
+    print(i.text)
+
 # similarly i got class details from a anchor tag
 print(links['class'])
 
@@ -110,5 +118,10 @@ for i in ww2_contents:
 overview=soup.find_all('table',class_='infobox vevent')
 for z in overview:
     print(z.text)
-    
+  
+images=soup.find_all('img')
+
+images
+##or
+print(images)
 
