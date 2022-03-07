@@ -141,7 +141,8 @@ while True:
             print(' =====> Data saved successfully !!!')
             print()
     elif choice == 3:
-        pass
+        print('Thank you for using !!!')
+        break
 
     elif choice == 4:
         print('Thank you for using !!!')
