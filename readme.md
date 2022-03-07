@@ -17,12 +17,13 @@
 	<li>requests</li>
 	<li>bs4</li>
 </ul>
-<span style="text-decoration: underline;"><strong>Installation:</strong></span>
+<h3>Install required dependencies :</h3>
 <ul>
-	<li>sudo apt-get python3-pip</li>
-	<li>pip3 install requests</li>
-	<li>pip3 install bs4</li>
-</ul>
+	<li>clone or download it from <a href="https://github.com/rajat4665/web-scraping-with-python" target="_blank" rel="noopener">here</a></li>
+	<li>install requirements.txt file</li>
+	<li><code>pip install -r requirements.txt</code></li>
+
+ </ul>
 
 <h2> How to run this code</h2>
 <ul>
@@ -30,4 +31,5 @@
 	<li>one can run Scraping with BeautifulSoup.py file in python by run this cammand in terminal "python3 Web Scraping with BeautifulSoup.py"</li>
 	<li>one can run Scraping with BeautifulSoup.ipynb file in jupyter notebook /li>
 	<li>one can install juypyter notebook by this command "pip3 install jupyter"</li>
+	<li> CLI scraping tool is underdevelopment only beta version  is available now </li>
 </ul>
