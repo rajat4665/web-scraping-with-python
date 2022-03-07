@@ -33,3 +33,5 @@
 	<li>one can install juypyter notebook by this command "pip3 install jupyter"</li>
 	<li> CLI scraping tool is underdevelopment only beta version  is available now </li>
 </ul>
+----------------------------------------------------------------------------------------
+<h1>HAPPY CODING</h1>
