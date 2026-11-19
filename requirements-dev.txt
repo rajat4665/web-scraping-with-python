@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=8
+ruff>=0.6
+jupyter

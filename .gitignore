@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data produced by the tutorial and CLI tool
+scraped_data.json
+quotes.csv
+quotes.json
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
