@@ -9,7 +9,6 @@ on:
   pull_request:
     paths:
       - "lessons/**"
-      - "Web Scraping with BeautifulSoup.py"
       - "requirements*.txt"
       - ".github/workflows/lessons.yml"
 
@@ -25,10 +24,7 @@ jobs:
       - run: pip install -r requirements-advanced.txt
       - run: playwright install --with-deps chromium
 
-      - name: Lesson 1
-        run: python "Web Scraping with BeautifulSoup.py"
-
-      - name: Lessons 2-8
+      - name: Run lessons 1-8
         working-directory: lessons
         run: |
           for lesson in 0*.py; do

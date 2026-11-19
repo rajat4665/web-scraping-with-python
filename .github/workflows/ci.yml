@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - run: pip install -r requirements.txt pytest ruff
+      - run: pip install . pytest ruff
+      - run: webscraper --help # the installed command works
       - run: ruff check .
       - run: pytest -q

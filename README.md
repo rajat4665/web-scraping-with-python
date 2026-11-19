@@ -1,4 +1,4 @@
-![web scraping with python](WEB%20SCRAPING.jpg)
+![web scraping with python](assets/banner.jpg)
 
 # Web Scraping with Python
 
@@ -21,7 +21,7 @@ and they're checked automatically every week.
 
 | # | Lesson | You'll learn |
 |---|--------|--------------|
-| 1 | [**Web scraping basics**](Web%20Scraping%20with%20BeautifulSoup.ipynb) | `requests`, BeautifulSoup, `find` / `find_all`, CSS selectors, pagination, saving to CSV/JSON, scraping Wikipedia |
+| 1 | [**Web scraping basics**](lessons/01_web_scraping_basics.ipynb) | `requests`, BeautifulSoup, `find` / `find_all`, CSS selectors, pagination, saving to CSV/JSON, scraping Wikipedia |
 | 2 | [**Hidden APIs and embedded JSON**](lessons/02_hidden_apis_and_embedded_json.ipynb) | Finding a site's JSON API in DevTools, data in `<script>` tags, JSON-LD and `__NEXT_DATA__` |
 | 3 | [**Reliable requests**](lessons/03_reliable_requests.ipynb) | Timeouts, retries with exponential backoff, `429` and `Retry-After`, encoding bugs (`Â£`), caching, rate limiting |
 | 4 | [**Fast scraping with asyncio**](lessons/04_fast_async_crawling.ipynb) | `httpx` + `asyncio`, limiting concurrency with a `Semaphore`, crawling 1,000 pages in about 30 seconds |
@@ -33,15 +33,30 @@ and they're checked automatically every week.
 New to scraping? Start with Lesson 1. Already comfortable with BeautifulSoup?
 Jump to Lesson 2; it will change how you approach every site.
 
-## What's inside
+## Project structure
 
-| Path | What it is |
-|------|------------|
-| [`Web Scraping with BeautifulSoup.ipynb`](Web%20Scraping%20with%20BeautifulSoup.ipynb) / [`.py`](Web%20Scraping%20with%20BeautifulSoup.py) | Lesson 1, as a notebook and as a script |
-| [`lessons/`](lessons) | Lessons 2–8, each as `.ipynb` and `.py`, plus the Scrapy spider [`books_spider.py`](lessons/books_spider.py) |
-| [`web_scraping_command_line_tool.py`](web_scraping_command_line_tool.py) | A CLI that scrapes pages and saves them to a JSON file |
-| [`tests/`](tests) | Tests for the CLI tool (they run offline) |
-| [`tools/py_to_notebook.py`](tools/py_to_notebook.py) | Builds the notebooks from the lesson scripts |
+```
+web-scraping-with-python/
+├── lessons/                      the course: start here
+│   ├── 01_web_scraping_basics.ipynb   each lesson is a notebook (with outputs)...
+│   ├── 01_web_scraping_basics.py      ...and the same lesson as a plain script
+│   ├── 02_ ... 08_                    lessons 2-8, same pattern
+│   ├── books_spider.py                the Scrapy spider used in lesson 7
+│   └── output/                        files the lessons create (not committed)
+├── webscraper/                   the command line tool, as a small package
+│   ├── fetch.py                       download pages (User-Agent, timeouts, robots.txt)
+│   ├── extract.py                     turn HTML into data
+│   ├── storage.py                     the JSON file the results are saved in
+│   ├── scrape.py                      fetch + extract + store in one call
+│   └── cli.py                         commands and the interactive menu
+├── tests/                        tests for webscraper (offline, no network)
+├── tools/py_to_notebook.py       builds the notebooks from the lesson scripts
+├── assets/                       images used by the README and lessons
+├── requirements.txt              lesson 1 + the CLI tool
+├── requirements-advanced.txt     lessons 2-8
+├── requirements-dev.txt          everything, plus test and lint tools
+└── pyproject.toml                package metadata and tool settings
+```
 
 ## Setup
 
@@ -61,40 +76,33 @@ playwright install chromium                # Lesson 5 needs a browser
 
 ## Run the lessons
 
-As a script:
+Run the lessons from inside the `lessons/` folder. They save their files to
+`lessons/output/`.
 
-```bash
-python "Web Scraping with BeautifulSoup.py"
-```
-
-Or in Jupyter, which is nicer for learning because you can run one cell at a time:
-
-```bash
-pip install jupyter
-jupyter notebook "Web Scraping with BeautifulSoup.ipynb"
-```
-
-Lesson 1 scrapes [quotes.toscrape.com](https://quotes.toscrape.com), a site
-built for practising scraping, then a Wikipedia article. It writes
-`quotes.csv` and `quotes.json` to the current folder.
-
-Run Lessons 2–8 from inside the `lessons/` folder. They save their
-results to `lessons/output/`.
+In Jupyter, which is nicer for learning because you can run one cell at a time:
 
 ```bash
 cd lessons
-jupyter notebook                      # then open any lesson
-python 04_fast_async_crawling.py      # or run one as a script
+jupyter notebook          # then open 01_web_scraping_basics.ipynb
+```
+
+Or as plain scripts:
+
+```bash
+cd lessons
+python 01_web_scraping_basics.py
+python 04_fast_async_crawling.py
 ```
 
 Lesson 8 uses the books that Lesson 4 downloads, so run Lesson 4 first.
 
 ## Use the command line tool
 
-Run it with no arguments to get the interactive menu:
+Run it from the repo's top folder. With no arguments you get the
+interactive menu:
 
 ```bash
-python web_scraping_command_line_tool.py
+python -m webscraper
 ```
 
 ```
@@ -109,18 +117,32 @@ Or use the commands directly:
 
 ```bash
 # scrape a page and save it as "quotes"
-python web_scraping_command_line_tool.py scrape https://quotes.toscrape.com --alias quotes
+python -m webscraper scrape https://quotes.toscrape.com --alias quotes
 
 # list everything you've scraped
-python web_scraping_command_line_tool.py list
+python -m webscraper list
 
 # summary of one page, or just one field
-python web_scraping_command_line_tool.py show quotes
-python web_scraping_command_line_tool.py show quotes --field all_anchor_href
+python -m webscraper show quotes
+python -m webscraper show quotes --field all_anchor_href
 
 # export one page's data to its own file, or delete it
-python web_scraping_command_line_tool.py export quotes -o quotes.json
-python web_scraping_command_line_tool.py delete quotes
+python -m webscraper export quotes -o quotes.json
+python -m webscraper delete quotes
+```
+
+Want a `webscraper` command you can run from any folder? Install the
+package with `pip install -e .`, then use `webscraper list`,
+`webscraper scrape ...` and so on.
+
+You can also use it from your own Python code:
+
+```python
+from webscraper import fetch_html, extract_page_data
+
+html, url = fetch_html("https://quotes.toscrape.com")
+data = extract_page_data(html, url)
+print(data["title"], len(data["all_anchor_href"]), "links")
 ```
 
 For every page the tool saves the title, meta description, h1/h2/h3
@@ -153,6 +175,12 @@ After editing one, rebuild and re-run its notebook:
 cd lessons
 python ../tools/py_to_notebook.py 03_reliable_requests.py --execute
 ```
+
+> **Looking for the old files?** The tutorial used to be
+> `Web Scraping with BeautifulSoup.ipynb` in the top folder; it's now
+> [`lessons/01_web_scraping_basics.ipynb`](lessons/01_web_scraping_basics.ipynb).
+> `web_scraping_command_line_tool.py` became the [`webscraper/`](webscraper)
+> package (`python -m webscraper`).
 
 ## Scraping responsibly
 

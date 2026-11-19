@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # %% [markdown]
-# # Web Scraping with Python: requests + BeautifulSoup
+# # Lesson 1: Web scraping basics with requests + BeautifulSoup
 #
 # This tutorial goes from "download a page" to "scrape many pages and save
 # the data to CSV". Each section builds on the one before it.
@@ -8,7 +8,7 @@
 # Install the libraries first:
 #
 # ```bash
-# pip install -r requirements.txt
+# pip install -r requirements.txt   # from the repo's top folder
 # ```
 #
 # We'll mostly scrape **https://quotes.toscrape.com**, a site made for
@@ -18,10 +18,14 @@
 import csv
 import json
 import time
+from pathlib import Path
 from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
+
+OUTPUT = Path("output")  # every lesson saves its files here
+OUTPUT.mkdir(exist_ok=True)
 
 # %% [markdown]
 # ## 1. Download a page with `requests`
@@ -178,16 +182,16 @@ print("\nTotal quotes scraped:", len(all_quotes))
 # ## 8. Save the data (CSV and JSON)
 
 # %%
-with open("quotes.csv", "w", newline="", encoding="utf-8") as fh:
+with open(OUTPUT / "quotes.csv", "w", newline="", encoding="utf-8") as fh:
     writer = csv.DictWriter(fh, fieldnames=["text", "author", "tags"])
     writer.writeheader()
     for q in all_quotes:
         writer.writerow({**q, "tags": ", ".join(q["tags"])})
 
-with open("quotes.json", "w", encoding="utf-8") as fh:
+with open(OUTPUT / "quotes.json", "w", encoding="utf-8") as fh:
     json.dump(all_quotes, fh, indent=2, ensure_ascii=False)
 
-print("Saved quotes.csv and quotes.json")
+print("Saved output/quotes.csv and output/quotes.json")
 
 # %% [markdown]
 # ## 9. A real website: Wikipedia
@@ -197,8 +201,13 @@ print("Saved quotes.csv and quotes.json")
 # * Open the page in your browser, right-click and choose **Inspect** to find
 #   the tags and classes you need.
 # * Websites change their HTML over time, so selectors that worked last year
-#   may not work today. (This tutorial used to read Wikipedia's
-#   `div.toc`, which no longer exists.) Always check for `None`.
+#   may not work today. Always check for `None`.
+#
+# For example, this is how Wikipedia's table of contents looked in DevTools
+# when this tutorial was first written. It was a `<div id="toc" class="toc">`.
+# That element no longer exists, so code that relied on it now finds nothing.
+#
+# ![Wikipedia's old table of contents in DevTools](../assets/devtools-inspect-wikipedia.png)
 
 # %%
 wiki_url = "https://en.wikipedia.org/wiki/World_War_II"
@@ -256,9 +265,9 @@ for src in images[:5]:
 # * Add a delay between requests and don't hammer servers.
 # * Don't scrape personal data, or content behind a login, without permission.
 #
-# **Next:** [Lesson 2](lessons/02_hidden_apis_and_embedded_json.ipynb): hidden APIs and
-# embedded JSON.
-# Before writing selectors, check whether the data is already available as JSON.
+# **Next:** [Lesson 2](02_hidden_apis_and_embedded_json.ipynb): hidden APIs and
+# embedded JSON. Before writing selectors, check whether the data is already
+# available as JSON.
 #
-# Also try `web_scraping_command_line_tool.py` in this repo, which wraps
-# these ideas into a reusable command line tool.
+# Also try the `webscraper` command line tool in this repo
+# (`python -m webscraper`), which wraps these ideas into a reusable tool.
