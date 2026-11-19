@@ -1,0 +1,38 @@
+name: Lessons
+
+# Runs every lesson against the live practice websites. Websites change, so
+# this catches broken examples even when nobody touched the code.
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday at 06:00 UTC
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "lessons/**"
+      - "Web Scraping with BeautifulSoup.py"
+      - "requirements*.txt"
+      - ".github/workflows/lessons.yml"
+
+jobs:
+  run-lessons:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements-advanced.txt
+      - run: playwright install --with-deps chromium
+
+      - name: Lesson 1
+        run: python "Web Scraping with BeautifulSoup.py"
+
+      - name: Lessons 2-8
+        working-directory: lessons
+        run: |
+          for lesson in 0*.py; do
+            echo "::group::$lesson"
+            python "$lesson"
+            echo "::endgroup::"
+          done
