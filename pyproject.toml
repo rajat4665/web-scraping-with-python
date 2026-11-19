@@ -1,3 +1,29 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webscraper"
+version = "2.0.0"
+description = "Scrape web pages and keep the results in a local JSON file (from the web-scraping-with-python course)."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "beautifultable>=1.1",
+]
+
+[project.scripts]
+webscraper = "webscraper.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/rajat4665/web-scraping-with-python"
+
+[tool.setuptools]
+packages = ["webscraper"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
@@ -7,10 +33,13 @@ extend-exclude = ["lessons/*.ipynb"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["webscraper", "conftest"]
+
 [tool.ruff.lint.per-file-ignores]
-# The tutorial is laid out as notebook cells.
-"Web Scraping with BeautifulSoup.py" = ["E402"]
+# Lessons are laid out as notebook cells, so imports aren't all at the top.
 "lessons/0*.py" = ["E402"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
