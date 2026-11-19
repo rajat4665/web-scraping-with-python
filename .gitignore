@@ -18,3 +18,7 @@ quotes.json
 .DS_Store
 .vscode/
 .idea/
+
+# Advanced lessons: generated output and Scrapy's HTTP cache
+lessons/output/
+.scrapy/

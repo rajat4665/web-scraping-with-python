@@ -1,6 +1,8 @@
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+# Lesson notebooks are generated from the .py files, so lint those instead.
+extend-exclude = ["lessons/*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
@@ -8,6 +10,7 @@ select = ["E", "F", "W", "I", "B", "UP"]
 [tool.ruff.lint.per-file-ignores]
 # The tutorial is laid out as notebook cells.
 "Web Scraping with BeautifulSoup.py" = ["E402"]
+"lessons/0*.py" = ["E402"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

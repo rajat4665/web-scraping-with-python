@@ -256,5 +256,9 @@ for src in images[:5]:
 # * Add a delay between requests and don't hammer servers.
 # * Don't scrape personal data, or content behind a login, without permission.
 #
-# **Next steps:** try `web_scraping_command_line_tool.py` in this repo,
-# which wraps these ideas into a reusable command line tool.
+# **Next:** [Lesson 2](lessons/02_hidden_apis_and_embedded_json.ipynb): hidden APIs and
+# embedded JSON.
+# Before writing selectors, check whether the data is already available as JSON.
+#
+# Also try `web_scraping_command_line_tool.py` in this repo, which wraps
+# these ideas into a reusable command line tool.
